@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import ReactMarkdown from 'react-markdown';
+import { PdfButtonWrapper } from './pdf-button';
 
 // Fonction pour extraire les sections du Markdown
 function extractSections(content: string) {
@@ -72,6 +73,11 @@ export default async function Home() {
               </article>
             </div>
           </main>
+        </div>
+
+        {/* Bouton de téléchargement */}
+        <div className="mt-8 text-center">
+          <PdfButtonWrapper sections={sections} />
         </div>
       </div>
     </div>
