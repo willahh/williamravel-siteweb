@@ -2,17 +2,76 @@ import fs from 'fs/promises';
 import path from 'path';
 import ReactMarkdown from 'react-markdown';
 
+// Fonction pour extraire les sections du Markdown
+function extractSections(content: string) {
+  const lines = content.split('\n');
+  const sections: { [key: string]: string } = {};
+  let title = '';
+  let currentSection = '';
+  let currentContent: string[] = [];
+
+  for (const line of lines) {
+    if (line.startsWith('# ')) {
+      title = line.substring(2).trim();
+    } else if (line.startsWith('## ')) {
+      if (currentSection) {
+        sections[currentSection] = currentContent.join('\n').trim();
+      }
+      currentSection = line.substring(3).trim();
+      currentContent = [];
+    } else if (currentSection) {
+      currentContent.push(line);
+    }
+  }
+  if (currentSection) {
+    sections[currentSection] = currentContent.join('\n').trim();
+  }
+  sections.title = title;
+  return sections;
+}
+
 export default async function Home() {
   const markdownPath = path.join(process.cwd(), 'public', 'cv.md');
   const markdownContent = await fs.readFile(markdownPath, 'utf-8');
 
+  const sections = extractSections(markdownContent);
+
+  // Sections pour la sidebar
+  const sidebarSections = ['Profil', 'Compétences clés', 'Formation', 'Langues', 'Centres d’intérêt'];
+
+  // Contenu principal : Expériences professionnelles
+  const mainContent = sections['Expériences professionnelles'] || '';
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <main className="max-w-4xl mx-auto px-4">
-        <article className="prose prose-lg mx-auto">
-          <ReactMarkdown>{markdownContent}</ReactMarkdown>
-        </article>
-      </main>
+      <div className="max-w-7xl mx-auto px-4">
+        {/* Titre principal */}
+        <header className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">{sections.title}</h1>
+        </header>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Sidebar */}
+          <aside className="md:col-span-1 bg-white p-6 rounded-lg shadow-md">
+            {sidebarSections.map((section) => (
+              <div key={section} className="mb-6">
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">{section}</h3>
+                <div className="text-sm text-gray-600">
+                  <div className="prose prose-sm"><ReactMarkdown>{sections[section] || ''}</ReactMarkdown></div>
+                </div>
+              </div>
+            ))}
+          </aside>
+
+          {/* Contenu principal */}
+          <main className="md:col-span-2 bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Expériences professionnelles</h2>
+            <article className="prose prose-lg">
+              <ReactMarkdown>{mainContent}</ReactMarkdown>
+            </article>
+          </main>
+        </div>
+      </div>
     </div>
   );
 }
