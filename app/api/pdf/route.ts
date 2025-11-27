@@ -62,6 +62,14 @@ function wrapExperienceEntriesHtml(html: string) {
     .join('');
 }
 
+function enforceLinkTargets(html: string) {
+  return html.replace(
+    /<a\s+href="([^"]+)"([^>]*)>/g,
+    (_match, href, rest) =>
+      `<a href="${href}"${rest?.includes('target=') ? rest : `${rest} target="_blank" rel="noopener noreferrer"`}>`,
+  );
+}
+
 export async function GET() {
   try {
     const markdownPath = path.join(process.cwd(), 'public', 'cv.md');
@@ -80,11 +88,13 @@ export async function GET() {
     const subtitleHtml = subtitleLine ? marked(subtitleLine) : '';
     const contactHtml = contactMarkdown ? marked(contactMarkdown) : '';
 
-    const photoPlaceholderHtml = `
+    const imagePath = path.join(process.cwd(), 'public', 'photo-will-2.png');
+    const imageBuffer = await fs.readFile(imagePath);
+    const imageBase64 = imageBuffer.toString('base64');
+
+    const photoHtml = `
       <section class="photo-block">
-        <div class="photo-placeholder">
-          <span>Photo à venir</span>
-        </div>
+        <img src="data:image/png;base64,${imageBase64}" alt="Photo de profil" class="profile-photo">
       </section>
     `;
 
@@ -142,7 +152,7 @@ export async function GET() {
         .join('');
 
     // HTML template avec styles pour PDF (A4, sidebar, etc.)
-    const html = `
+    const rawHtml = `
       <html>
         <head>
           <style>
@@ -284,6 +294,7 @@ export async function GET() {
             .photo-block {
               display: flex;
               justify-content: center;
+              align-items: center;
             }
             .photo-placeholder {
               width: 146px;
@@ -314,13 +325,19 @@ export async function GET() {
             strong {
               font-weight: 600;
             }
+            .profile-photo {
+              width: 39mm;
+              height: 45mm;
+              object-fit: cover;
+              border-radius: 2mm;
+            }
           </style>
         </head>
         <body>
           <div class="pdf-page">
             <div class="layout">
               <aside class="left-column">
-                ${photoPlaceholderHtml}
+                ${photoHtml}
                 ${
                   contactHtml
                     ? `<section class="left-block"><h3>Contact</h3><div class="markdown">${contactHtml}</div></section>`
@@ -340,6 +357,7 @@ export async function GET() {
         </body>
       </html>
     `;
+    const html = enforceLinkTargets(rawHtml);
 
     // Lancer Puppeteer pour générer PDF
     const browser = await puppeteer.launch({ headless: true });
