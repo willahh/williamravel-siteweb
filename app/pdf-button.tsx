@@ -139,30 +139,36 @@ const CvPdf = ({ sections }: PdfButtonWrapperProps) => {
 };
 
 export const PdfButtonWrapper = ({ sections }: PdfButtonWrapperProps) => {
-  const [isClient, setIsClient] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  // Assurer que le composant ne rend rien côté serveur
-  useState(() => {
-    setIsClient(true);
-  });
-
-  if (!isClient) {
-    return <p>Chargement du bouton PDF...</p>;
-  }
+  const handleDownload = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/pdf');
+      if (!response.ok) throw new Error('Erreur API');
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'cv.pdf';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } catch (error) {
+      console.error(error);
+      alert('Erreur lors du téléchargement PDF');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <PDFDownloadLink
-      document={<CvPdf sections={sections} />}
-      fileName="cv.pdf"
+    <button
+      onClick={handleDownload}
+      disabled={loading}
       className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-200 inline-block"
     >
-      {({ loading, error }) => {
-        if (error) {
-          console.error('Erreur génération PDF:', error);
-          return <span className="text-red-500">Erreur PDF</span>;
-        }
-        return loading ? 'Génération PDF...' : 'Télécharger PDF';
-      }}
-    </PDFDownloadLink>
+      {loading ? 'Génération PDF...' : 'Télécharger PDF'}
+    </button>
   );
 };

@@ -10,6 +10,8 @@ function extractSections(content: string) {
   let title = '';
   let currentSection = '';
   let currentContent: string[] = [];
+  const introLines: string[] = [];
+  let hasEnteredSection = false;
 
   for (const line of lines) {
     if (line.startsWith('# ')) {
@@ -20,16 +22,21 @@ function extractSections(content: string) {
       }
       currentSection = line.substring(3).trim();
       currentContent = [];
+      hasEnteredSection = true;
     } else if (currentSection) {
       currentContent.push(line);
+    } else if (!hasEnteredSection) {
+      introLines.push(line);
     }
   }
   if (currentSection) {
     sections[currentSection] = currentContent.join('\n').trim();
   }
   sections.title = title;
+  sections.intro = introLines.join('\n').trim();
   return sections;
 }
+
 
 export default async function Home() {
   const markdownPath = path.join(process.cwd(), 'public', 'cv.md');
