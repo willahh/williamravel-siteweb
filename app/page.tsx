@@ -44,11 +44,13 @@ export default async function Home() {
 
   const sections = extractSections(markdownContent);
 
-  // Sections pour la sidebar
-  const sidebarSections = ['Profil', 'Compétences clés', 'Formation', 'Langues', 'Centres d’intérêt'];
+  // Sections pour la sidebar (profil déplacé côté principal)
+  const sidebarSections = ['Compétences clés', 'Education', 'Langues', 'Centres d’intérêt'];
 
-  // Contenu principal : Expériences professionnelles
-  const mainContent = sections['Expériences professionnelles'] || '';
+  const mainSections = [
+    { title: 'Profil', content: sections['Profil'] },
+    { title: 'Expériences professionnelles', content: sections['Expériences professionnelles'] },
+  ].filter((section) => section.content);
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -56,6 +58,13 @@ export default async function Home() {
         {/* Titre principal */}
         <header className="cv-section text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">{sections.title}</h1>
+          {sections.intro && (
+            <div className="text-lg text-gray-700 mt-1">
+              <div className="prose prose-lg mx-auto">
+                <ReactMarkdown>{sections.intro}</ReactMarkdown>
+              </div>
+            </div>
+          )}
         </header>
 
         <div className="cv-grid grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -72,13 +81,15 @@ export default async function Home() {
           </aside>
 
           {/* Contenu principal */}
-          <main className="cv-main md:col-span-2 bg-white p-6 rounded-lg shadow-md">
-            <div className="cv-section">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Expériences professionnelles</h2>
-              <article className="prose prose-lg">
-                <ReactMarkdown>{mainContent}</ReactMarkdown>
-              </article>
-            </div>
+          <main className="cv-main md:col-span-2 bg-white p-6 rounded-lg shadow-md space-y-8">
+            {mainSections.map(({ title, content }) => (
+              <section key={title} className="cv-section">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">{title}</h2>
+                <article className="prose prose-lg">
+                  <ReactMarkdown>{content}</ReactMarkdown>
+                </article>
+              </section>
+            ))}
           </main>
         </div>
 
