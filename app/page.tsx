@@ -44,17 +44,17 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="cv-container max-w-7xl mx-auto px-4">
         {/* Titre principal */}
-        <header className="text-center mb-8">
+        <header className="cv-section text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">{sections.title}</h1>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="cv-grid grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Sidebar */}
-          <aside className="md:col-span-1 bg-white p-6 rounded-lg shadow-md">
+          <aside className="cv-sidebar md:col-span-1 bg-white p-6 rounded-lg shadow-md">
             {sidebarSections.map((section) => (
-              <div key={section} className="mb-6">
+              <div key={section} className="cv-section mb-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">{section}</h3>
                 <div className="text-sm text-gray-600">
                   <div className="prose prose-sm"><ReactMarkdown>{sections[section] || ''}</ReactMarkdown></div>
@@ -64,11 +64,13 @@ export default async function Home() {
           </aside>
 
           {/* Contenu principal */}
-          <main className="md:col-span-2 bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Expériences professionnelles</h2>
-            <article className="prose prose-lg">
-              <ReactMarkdown>{mainContent}</ReactMarkdown>
-            </article>
+          <main className="cv-main md:col-span-2 bg-white p-6 rounded-lg shadow-md">
+            <div className="cv-section">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">Expériences professionnelles</h2>
+              <article className="prose prose-lg">
+                <ReactMarkdown>{mainContent}</ReactMarkdown>
+              </article>
+            </div>
           </main>
         </div>
       </div>

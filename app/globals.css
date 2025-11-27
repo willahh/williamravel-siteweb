@@ -44,3 +44,82 @@ a {
     color-scheme: dark;
   }
 }
+
+/* Styles pour l'impression PDF (CV) */
+@media print {
+  body {
+    font-size: 12pt;
+    line-height: 1.4;
+    color: black;
+    background: white !important;
+  }
+
+  /* Dimensions A4 approximatives */
+  .cv-container {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 20mm;
+    box-shadow: none !important;
+    background: white !important;
+  }
+
+  /* Réduire les marges pour le contenu */
+  .cv-sidebar,
+  .cv-main {
+    padding: 10mm !important;
+    margin: 0 !important;
+  }
+
+  /* Éviter les sauts de page au milieu des sections */
+  .cv-section {
+    page-break-inside: avoid;
+  }
+
+  /* Sauts de page après certaines sections */
+  .cv-section:nth-child(odd) {
+    page-break-after: always;
+  }
+
+  /* Masquer les éléments non nécessaires */
+  .no-print {
+    display: none !important;
+  }
+
+  /* Ajuster les titres */
+  h1 {
+    font-size: 18pt;
+    margin-bottom: 10mm;
+  }
+
+  h2 {
+    font-size: 14pt;
+    margin-bottom: 5mm;
+  }
+
+  h3 {
+    font-size: 12pt;
+    margin-bottom: 3mm;
+  }
+
+  /* Ajuster la grille pour un layout vertical en PDF */
+  .cv-grid {
+    display: block !important;
+  }
+
+  .cv-sidebar {
+    width: 100% !important;
+    margin-bottom: 10mm;
+  }
+
+  .cv-main {
+    width: 100% !important;
+  }
+
+  /* Liens : afficher l'URL */
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 10pt;
+    color: #666;
+  }
+}
