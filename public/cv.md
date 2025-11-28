@@ -72,7 +72,7 @@ UI/UX designer - Développeur frontend (Flash, ActionScript et JavaScript vanill
 - Anglais : Courant
 
 ## Centres d’intérêt
-Graphisme (Figma, Adobe Suite) • Course à pied • Nature • Lecture tech
+Nature • Course à pied • Cuisine
 
 ---
 
