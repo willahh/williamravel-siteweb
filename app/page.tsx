@@ -39,7 +39,7 @@ function extractSections(content: string) {
 
 
 export default async function Home() {
-  const markdownPath = path.join(process.cwd(), 'public', 'cv.md');
+  const markdownPath = path.join(process.cwd(), 'public', 'cv-frontend.md');
   const markdownContent = await fs.readFile(markdownPath, 'utf-8');
 
   const sections = extractSections(markdownContent);

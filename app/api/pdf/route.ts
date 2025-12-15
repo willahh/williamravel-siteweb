@@ -72,7 +72,7 @@ function enforceLinkTargets(html: string) {
 
 export async function GET() {
   try {
-    const markdownPath = path.join(process.cwd(), 'public', 'cv.md');
+    const markdownPath = path.join(process.cwd(), 'public', 'cv-frontend.md');
     const markdownContent = await fs.readFile(markdownPath, 'utf-8');
 
     const sections = extractSections(markdownContent);
