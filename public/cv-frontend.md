@@ -4,7 +4,13 @@ Paris • wravel@gmail.com • [06 19 19 89 67](tel:+0619198967)
 [linkedin.com/in/wravel](https://www.linkedin.com/in/wravel) • [github.com/willahh](https://github.com/willahh) • [coloringbook](https://willahh.github.io/coloringbook-docs/)
 
 ## Profil
-Développeur Full Stack (+20 ans) spécialisé en **React / Redux**, architectures d'applications web modernes, UI/UX interactives et expériences utilisateur fluides. Expert en **Javascript**, **React**, et développement d'interfaces riches (canvas, drag & drop, responsive design). Expérience solide en **backend Node.js / NestJS** pour les APIs REST et architectures microservices. Maîtrise des environnements Agile/Scrum, CI/CD et déploiements cloud.  
+Développeur Frontend Senior (+20 ans d'expérience)
+Passionné par les interfaces modernes et performantes
+• React • TypeScript • Next.js • Redux/Zustand • Tailwind • Testing (RTL, Jest, Cypress)
+• Clean Architecture • Performance • Accessibilité • Design Systems
+Solide expérience backend en support :
+Node.js • NestJS • APIs REST/GraphQL • Event-Driven • Microservices • SQL/NoSQL
+Habitué des environnements Agile/Scrum • CI/CD • Docker/Kubernetes • GCP • Monitoring  
 
 ## Compétences
 
